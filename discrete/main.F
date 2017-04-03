@@ -1,12 +1,11 @@
 !===========================================================================
-!  DISCRETE 0.2.6a
 !
-!  Discrete Molecular Dynamics,
-!
+!  GOdMD, mutating residues
+!  Pedro Sfriso
 !
 !==========================================================================
 program discrete
- 
+
     use commLine
     use geometry
     use geometryDP
@@ -21,21 +20,21 @@ program discrete
     use ran_mod
     use doubleDMD
     use ANM
-    
+
     !
-    IMPLICIT NONE 
+    IMPLICIT NONE
     !
 #include "vars.h"
-   
- 
+
+
   call readCommLine(files, unit_i, unit_o, NFILES)
   call readInputParamSet(unit_i)
  !
  ! SetUp
- ! 
+ !
   str = loadStructurePDB(openFn(files, '-pdbin'))
   strTarg= loadStructurePDB(openFn(files, '-pdbtarg'))
- 
+
  !
  call setBonds(str)
  !
@@ -62,7 +61,7 @@ program discrete
  !call errorAllocmem(ioerr, 'NRes')
  allocate (atoms(natom), PDBrnum(natom), res(natom), atp(natom), chain(natom),molnum(natom), &
            stepPtsDef(natom,natom),PDBTargetID(strTarg%natoms),stat = ioerr)
- call errorAllocmem(ioerr, 'NAtom') 
+ call errorAllocmem(ioerr, 'NAtom')
 
  ! ==== ENTRA unit pairs, sale oid, natomCommon  ====
  !
@@ -108,7 +107,7 @@ program discrete
  chain= str %ats(:) %chainId
  atp= str %ats(:) %atType
  molnum= str %ats(:) %molnum
- stepPtsDef=str %idata 
+ stepPtsDef=str %idata
  !
  DO i=1,natom
      call removesp(str %ats(i) %realResID)
@@ -117,7 +116,7 @@ program discrete
      call removesp(res(i) )
      call removesp(chain(i) )
      call removesp(atp(i) )
- END DO 
+ END DO
  !
  !DO i=1,natom
  !write(unit_o,*)PDBrnum(i)
@@ -133,9 +132,9 @@ program discrete
     END DO
     !
  !   DO i=1,natomCommon
- !      Write(unit_o, *)i, oid(i) , commonResidue(i) 
+ !      Write(unit_o, *)i, oid(i) , commonResidue(i)
  !   END DO
- ! 
+ !
  !  Ahora decider que residuos del target son los comunes
  !
  !
@@ -165,12 +164,12 @@ program discrete
            k=k+1
        END IF
    END DO
-   
+
 
  ! Coordinates
  allocate ( r(natom), stat = ioerr)
  call errorAllocmem(ioerr, 'Coordinates')
- 
+
 !
     do i = 1, natom
         r(i) = SPtoDP(str % ats(i) % r)
@@ -180,8 +179,8 @@ program discrete
 !        rtarg(i) = SPtoDP(rspTarg(i))
 !    enddo
 
-    ! 
- deallocate(commonResidue,PDBTargetID)   
+    !
+ deallocate(commonResidue,PDBTargetID)
  !
  !END SETUP
  !
@@ -194,7 +193,7 @@ program discrete
     !
     ! Todos los atomos son CA es una asignacion a una lista entera
     evdw = 0.15
-    rvdw = 2.0 
+    rvdw = 2.0
     rhc  = 1.9 !1.6
     xm   = 0.012
     xsum = 1.0/xm !0.5 * (1./xm + 1./xm)
@@ -235,7 +234,7 @@ program discrete
     !
     allocate( error_evo(error_evo_size,2 ), stat=ioerr)
     ! CALL ERROR!!
-    error_evo=0.0 
+    error_evo=0.0
     !
     !
     allocate( ener_evo(ener_evo_size,2 ) , stat=ioerr)
@@ -261,7 +260,7 @@ program discrete
                 stepPts(oid(i),oid(j)) % dmin = distHC
                 stepPts(oid(i),oid(j)) % dego = 0.0
                 stepPts(oid(i),oid(j)) % saltos =10
-             !     
+             !
               stepPts(oid(j),oid(i))=stepPts(oid(i),oid(j))
         enddo
     enddo
@@ -269,14 +268,14 @@ program discrete
     ! Vamos a fijar los potenciales de los residuos sin equivalente en el target
     !
     do j = 2, natom
-        do i = 1, j-1          
-            IF(ANY(oid==i).and.ANY(oid==j)) THEN  
+        do i = 1, j-1
+            IF(ANY(oid==i).and.ANY(oid==j)) THEN
                 CYCLE
             ELSE
                   IF (stepPtsDef(i,j)%tipint == COVB) THEN
                      stepPts(i,j) = getStepPotForDummy(GOENER,sigmago,calcDistDP(r(i),r(j)),COVB)
                      stepPts(i,j) % dmin = distHC
-                  ELSE 
+                  ELSE
                      IF( calcDistDP(r(i),r(j)) < radioInteraccion ) THEN
                         ! Las particulas interaccionan
                         stepPts(i,j) = getStepPotForDummy(GOENER,sigmaFake,calcDistDP(r(i),r(j) ),FAKE)
@@ -284,10 +283,10 @@ program discrete
                      END IF
                   END IF
                   stepPts(j,i)=stepPts(i,j)
-            END IF  
+            END IF
         enddo
     enddo
-  
+
     deallocate (stepPtsDef)
     !
     !
@@ -305,13 +304,13 @@ program discrete
              END IF
      END DO
 
-    !    
+    !
     call fixDistances(natom, natomCommon,oid,dist_INI,dist_TARG,ssectol,stepPts)
     write(unit_o,*) " He podido fijar las distancias"
     !
     allocate(discardedEner(natom,natom),stat = ioerr)
     ! CALL ERROR
-    discardedEner=0.0    
+    discardedEner=0.0
     !
     ! NM
     !
@@ -319,7 +318,7 @@ program discrete
     DO i=1,nevecs
        evec(i,:)=pointDP(0._DBL,0._DBL,0._DBL)
     ENDDO
-    
+
     call ANM1(natom,r,nevecs,evec,evals)
     !
     DO i=1,nevecs
@@ -331,24 +330,24 @@ program discrete
     DEALLOCATE(evec,evals)
     !
     Write(unit_o,*) " NMA-Metadynamica OK"
- 
+
     ! precalcul parells
     allocate(blist(natom), nblist(natom),clist(natom), stat = ioerr)
     call errorAllocMem(ioerr, 'Pair lists')
-    
+
     do i = 1, natom
         blist(i) = allocateintPList(5, ioerr)
         call errorAllocMem(ioerr, 'Bonded List')
     enddo
-    
+
     do j = 2, natom
         do i = 1, j - 1
             if (stepPts(i, j) % tipInt .eq. COVB ) then
                 stepPts(i, j) % active = .false.
                 stepPts(j, i) % active = .false.
-! j > i only 
+! j > i only
                 IF(calcDistDP(r(i),r(j)) >20.0d0 ) THEN
-                    write(*,*) " uuups", i,j 
+                    write(*,*) " uuups", i,j
                 !
                 ! no poner ninguna restriccion entre particulas que estan muy lejos
                 !
@@ -364,7 +363,7 @@ program discrete
           enddo
     enddo
     write(unit_o,*)"bonded list OK"
-    
+
     !write(unit_o,'(A4)') res(oid(:) )
 
    ! STOP
@@ -372,9 +371,9 @@ program discrete
         nblist(i) = allocateintPList(INT(0.6*natom), ioerr)
         call errorAllocMem(ioerr, 'Non Bonded List')
     enddo
-    
+
     nblist%nats = 0
-    
+
     do i = 1, natom
         clist(i) = allocateCList(INT(natom), ioerr)
         call errorAllocMem(ioerr, 'contacts List')
@@ -386,22 +385,22 @@ program discrete
     !
     write(unit_o,*) " contact list OK ", sum(clist(:)%nats)
 
-    
+
     write(unit_o,*)"non-bonded list OK"
-    
+
     call activateStepPot(stepPts, r,rtarg,oid ,rcut1,rcut2GO4, natom,natomCommon, nblist, xsum,radioInteraccion)
     !
     DEALLOCATE(dist_TARG,dist_INI)
     write(unit_o,*)"step-potentials activated"
-   
+
     call writePairList(unit_o,natom,contarBondedInt,stepPts)
-    
+
     deallocate (atp)
     !
     call cpu_time(tsetup)
     ! suma l'energia potencial de la conformacio inicial
     call calcEpot(natom,natom, r, stepPts, epotgo, epotfis, epot)
-    
+
     rcm = calcCM(natom, r, xm)
     !
     unit_traj = openFn(files, '-trj')
@@ -409,18 +408,18 @@ program discrete
     do i = 1, natom
         r(i) = r(i) - SPtoDP(rcm)
     enddo
-           
+
     iev = 0
     call thermalize(seed, iev, natom, temp, xmassa, v, xm, ekin)
     !DIMS
     !
     allocate( w(natomCommon) ,rprev(natom), stat=ioerr)
     call errorAllocMem(ioerr, 'DIMS')
-   
+
     call rmsd(natomCommon, r(oid(:)), rtarg(:), 1, U, center2, center1, error0, .FALSE.)
     call pdbsuperpos(natom, U , center1, center2,r)
     write(unit_o,*)"RMSD INICIAL ", error0
-  
+
     call MCWeigth(natom,oid,r, rtarg,w,natomCommon)
     score = distanceCA(natom, oid,r,rtarg,w,natomCommon)
     write(unit_o,*)"SCORE ", score
@@ -428,15 +427,15 @@ program discrete
     scoreprev=1.E10
     rprev=r
     iacc=0
- 
+
     call removesp(fileref)
     open(55,file=fileref)
     call writeSnapshot(55, 0, r, atoms, res, chain, PDBrnum, natom)
     close(55)
     WRITE(unit_traj,*)"# GODMD CRD file generated for ",fileref
     !
-   
-  
+
+
     ekin0 = ekin
     !
     temps = 0.
@@ -473,22 +472,22 @@ program discrete
     !
     !----------------------------------------------------------------------------
     do while (.not.stopping)
-        
+
     !
         axran=-ibloc-seed
         initiation=ran1(axran)
         ibloc=ibloc+1
         tacum = 0.
-    !    
+    !
         EnerCont=EnerCont+1
         IF (EnerCont > Ener_evo_size ) EnerCont=1
         Ener_evo(EnerCont,2) = epotgo
         Ener_evo(EnerCont,1)= real(ibloc)
 
         slopeEner=lreg(Ener_evo_size,Ener_evo)
-        
+
         IF (slopeEner < 1.0E-1 .and. abs(slopeEner) < 2.5E-2) enchufaMeta=.TRUE.
-        
+
         if( enchufaMeta ) THEN
             startMD=.TRUE.
             contarSaltos=0
@@ -511,8 +510,8 @@ program discrete
 
         END IF
         !
-        !    
-   
+        !
+
 
         !----------------------------------------------------------------------------
         do while (tacum .lt. TSNAP)
@@ -524,7 +523,7 @@ program discrete
                 taccorr = 0.
                 iev = 0
                 ierr = 0
-                
+
                 !----------------------------------------------------------------------------
                 do while (taccorr .lt. TCORR)
                     ekin0 = calcEkin(v, xm, natom)
@@ -535,7 +534,7 @@ program discrete
                     !call thermalize(seed, iev, natom, temp, xmassa, v, xm, ekin)
                 enddo
                 ! end do while(taccorr.lt.tcorr)-----------------------------------------------
-                call thermalize(seed, iev, natom, temp, xmassa, v, xm, ekin)   
+                call thermalize(seed, iev, natom, temp, xmassa, v, xm, ekin)
                 tacrect = tacrect + taccorr
             enddo
         !
@@ -557,40 +556,40 @@ program discrete
                iacc=iacc+1
                tacum=tacum+tacrect
          endif
-            
+
         write(unit_traj,'(10f8.3)')r
                call writeEnergies(unit_ener, unit_o, temps, epotgo, ekin0, natom,fractionDone,error,&
               aux_acc,xbeta,saco,sum(discardedEner(:,:)),count(stepPts(:,:) % saltos <0), &
-              contarSaltos,.TRUE., .TRUE.,ierr) 
- 
+              contarSaltos,.TRUE., .TRUE.,ierr)
+
         enddo
         ! end DO while(tacum.lt.tsnap) -------------------------------------------------
 
         IF(calcAuxAcc) aux_acc= accepted*1./totalTrials
       ! SELF_STOP
-   
+
          errcont=errcont+1
          IF (errcont > error_evo_size ) errcont=1
          error_evo(errcont,2)=error
          error_evo(errcont,1)=real(ibloc)
          ! DECIDE TO STOP
          slope=abs(lreg(error_evo_size,error_evo))
-        
+
          if ( (MOD(real(ibloc),5.0) == 0 .and.StartMD) .or.aux_acc<0.2) then
              xbeta= updateXbeta(xbeta,aux_acc,acceptance)
              accepted=1
              totalTrials=1
              calcAuxAcc=.TRUE.
          END IF
-         
+
          !
          ! NO MD
          call AreInB(natom,stepPts,r,numEnB)
-        
+
          fractionDone=Real(numEnB)/Real(contarTodos)
-   
+
          call rmsd(natomCommon, r(oid(:) ),rtarg(:), 1, U, center2, center1, error,.FALSE.)
-        
+
          call pdbsuperpos(natom, U , center1, center2,r)
          ! ways to stop
          !
@@ -602,7 +601,7 @@ program discrete
     !         stopping=.TRUE.
     !         exitStatus=0
     !     END IF
-         ! 
+         !
          IF (slope < DRMSD .and. error < 0.4*error0 .and. .not.stopping) THEN
            IF(ibloc > error_evo_size .and. error > errorAcceptable .and. cuantosForceIt < 6) THEN
              IF(.not.unForceIt) error_evo(errcont,2)=1.E10
@@ -619,10 +618,10 @@ program discrete
           !   xbeta=5000. ! se acabo el DIMS
        !  ELSE
        !      finishMD=.FALSE.
-       !      
+       !
        !  END IF
-         
-              
+
+
   !      IF( errorBKP-error > RMSD_DIF) THEN
              errorBKP=error
        IF (mod(ibloc,nskip)==0) THEN
@@ -633,7 +632,7 @@ program discrete
          !
          call writeEnergies(unit_ener, unit_o, temps, epotgo, ekin0, natom,fractionDone,error,&
               aux_acc,xbeta,saco,sum(discardedEner(:,:)),count(stepPts(:,:) % saltos <0), &
-              contarSaltos,.TRUE., .TRUE.,ierr) 
+              contarSaltos,.TRUE., .TRUE.,ierr)
          ! write(unit_traj,'(10f8.3)')r
           nwritten=nwritten+1
       END IF
@@ -656,27 +655,27 @@ program discrete
    write (unit_o, '(" ------------------------------------------------------------")')
    write (unit_o, '(" | Timming                                                  |")')
    write (unit_o, '(" ------------------------------------------------------------")')
-   write (unit_o, '(" | Number of iterations              | IBLOC  |",I12  ," |")') IBLOC 
-   write (unit_o, '(" | Number of particles               | natom  |",I12  ," |")') NATOM 
+   write (unit_o, '(" | Number of iterations              | IBLOC  |",I12  ," |")') IBLOC
+   write (unit_o, '(" | Number of particles               | natom  |",I12  ," |")') NATOM
    write (unit_o, '(" | Total Time (minutes)             |tfin-tini|",f12.3," |")')  (tfin - tinit)/60.
    write (unit_o, '(" ------------------------------------------------------------")')
    write (unit_o, '(" | Structure                                                |")')
    write (unit_o, '(" ------------------------------------------------------------")')
-   write (unit_o, '(" | Number of particles in common  |natomCommon|",I12  ," |")') NATOMCOMMON 
-   write (unit_o, '(" | Changing distances cut-off        |rcut2GO4|",f12.3," |")') rcut2go4 
+   write (unit_o, '(" | Number of particles in common  |natomCommon|",I12  ," |")') NATOMCOMMON
+   write (unit_o, '(" | Changing distances cut-off        |rcut2GO4|",f12.3," |")') rcut2go4
    write (unit_o, '(" | Number of double min wells     |contarTodos|",I12," |")') contarTodos
-   write (unit_o, '(" | Initial RMSD (A)                  | error0 |",f12.3," |")') error0   
-   write (unit_o, '(" | Final RMSD (A)                    |  error |",f12.3," |")') error   
+   write (unit_o, '(" | Initial RMSD (A)                  | error0 |",f12.3," |")') error0
+   write (unit_o, '(" | Final RMSD (A)                    |  error |",f12.3," |")') error
    write (unit_o, '(" | Fraction native contacts don  |fractionDone|",f12.3," |")') fractionDone
    write (unit_o, '(" ------------------------------------------------------------")')
-   write (unit_o, '(" | Exit status                                |",I12  ," |")') exitStatus 
+   write (unit_o, '(" | Exit status                                |",I12  ," |")') exitStatus
    write (unit_o, '(" ------------------------------------------------------------")')
    write (unit_o, *)
    write (unit_o,'("CHECK",2f8.3,X,I1,X,I4)') (error0-error)/error0, fractionDone, exitStatus, ibloc
-!===============================================================================   
-    
+!===============================================================================
+
 end
-!============================================================================= 
+!=============================================================================
 !===============================================================================
  subroutine writeInputParamSet (unit_o)
      use paramSet
@@ -689,22 +688,22 @@ end
    write (unit_o, '(" | Simulation settings                                      |")')
    write (unit_o, '(" ------------------------------------------------------------")')
    write (unit_o, '(" | Simulation Time (ps) (Nbloc x TSnap)       |",f12.3," |")') NBLOC * TSNAP / 1.e3
-   write (unit_o, '(" | Output structure (fs)             | TSnap  |",f12.3," |")') TSNAP 
+   write (unit_o, '(" | Output structure (fs)             | TSnap  |",f12.3," |")') TSNAP
    write (unit_o, '(" | Re-scoring target (fs)            | Trect  |",f12.3," |")') TRECT
    write (unit_o, '(" | Update velocities (fs)            | Tcorr  |",f12.3," |")') TCORR
    write (unit_o, '(" | Update Lists, collision times (fs)| Tact   |",f12.3," |")') TACT
-   write (unit_o, '(" | Min. accepted colision time (fs)  | TMin   |",f12.8," |")') TMIN   
+   write (unit_o, '(" | Min. accepted colision time (fs)  | TMin   |",f12.8," |")') TMIN
    write (unit_o, '(" | Temperature (K)                   | Temp   |",6X,f6.2, " |")') TEMP
    write (unit_o, '(" ------------------------------------------------------------")')
    write (unit_o, '(" ------------------------------------------------------------")')
-   write (unit_o, '(" | DIMS                                                     |")')  
+   write (unit_o, '(" | DIMS                                                     |")')
    write (unit_o, '(" ------------------------------------------------------------")')
    write (unit_o, '(" |Acceptance                          |ACCEPTANCE|",f12.8," |")') acceptance
    write (unit_o, '(" |GO Energy   (kcal)                  |GOENER    |",f12.8," |")') GOENER
-   write (unit_o, '(" |Changing distances well width(A)    |sigmago   |",f12.8," |")') sigmago 
+   write (unit_o, '(" |Changing distances well width(A)    |sigmago   |",f12.8," |")') sigmago
    write (unit_o, '(" |Tolerance between changes(A)        |dtol      |",f12.8," |")') dtol
-   write (unit_o, '(" |Not-Changing distances well width(A)|wellwidth |",f12.8," |")') wellwidth   
-   write (unit_o, '(" |Dummy tolerance (A)                 |sigmaFake |",f12.8," |")') sigmaFAke   
+   write (unit_o, '(" |Not-Changing distances well width(A)|wellwidth |",f12.8," |")') wellwidth
+   write (unit_o, '(" |Dummy tolerance (A)                 |sigmaFake |",f12.8," |")') sigmaFAke
    write (unit_o, '(" |Factor scaling NMA coupling         |scalFactor|",f12.8," |")') scalFactor
    write (unit_o, '(" |Cut-off in Radius Gyration        | rgyrPercent|",f12.8," |")') rgyrpercent
    write (unit_o, '(" |Cut-off not changing GO interact.(A)|rcut1     |",f12.8," |")') rcut1
@@ -715,7 +714,7 @@ end
    write (unit_o, '(" |Minimum acceptable RMSD (A)    |errorAcceptable|",f12.8," |")') errorAcceptable
    write (unit_o, '(" |Number of frames to skip            |NSKIP     |" I8    " |")') nskip
    write (unit_o, '(" ------------------------------------------------------------")')
-   write (unit_o, '(" | Other                                                    |")')  
+   write (unit_o, '(" | Other                                                    |")')
    write (unit_o, '(" ------------------------------------------------------------")')
    write (unit_o, '(" | Random generator seed                      |",7X,i5  " |")') seed
    write (unit_o, '(" | IDAB, IGOAB, IWR, ISOLV                    |",4X,4i2," |")') IDAB, IGOAB, IWR, ISOLV
