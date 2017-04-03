@@ -9,7 +9,7 @@
    commLineOption("-i",    "param",          "formatted",   "old",     "Settings"),&
    commLineOption("-pdbin", "raw PDB file",  "formatted",   "old",     "Initial PDB"),&
    commLineOption("-ener", "energy",         "formatted",   "unknown", "Energies"),&
-   commLineOption("-trj", "trajectory.crd", "formatted",   "unknown", "Trajectory (PDB)"),&
+   commLineOption("-trj", "trajectory.pdb", "formatted",   "unknown", "Trajectory (PDB)"),&
    commLineOption("-pdbtarg",  "target.pdb", "formatted",   "old",     "Target PDB"),&
    commLineOption("-o",    "log",            "formatted",   "unknown", "Calculation Log"),&
    commLineOption("-p1",   "same.dat",     "formatted",   "old",     "Table of same residues"),&

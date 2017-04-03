@@ -1,9 +1,8 @@
-V = 0.2.6
-EXEDIR =.
+EXEDIR = exe
 #
 .PHONY: lib setup discrete
 #
-all: setup discrete
+all: install 
 	
 lib: 
 	cd lib; make
@@ -11,12 +10,12 @@ lib:
 discrete: lib
 	cd discrete; make
 
-install: all
-	cp discrete/discrete $(EXEDIR)/discrete.exe
+install: discrete
+	cp discrete/discrete $(EXEDIR)/godmd
 
 clean:
 	cd lib;make clean
 	cd discrete; make clean
-	rm $(EXEDIR)/discrete.exe
+	rm $(EXEDIR)/godmd
 
         	
