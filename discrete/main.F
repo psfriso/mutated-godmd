@@ -39,26 +39,18 @@ program discrete
  call setBonds(str)
  !
  call  setStepPotentials(str)
- !
- !
- !nmol=str%nmol
- !nres=str%nres
  natom=str%natoms
  !
  ! Check if the system is a protein (minimo numero de atomos)
- IF (natom < natomMin ) THEN
-     WRITE(unit_o,*)" Only systems above ", natomMin, " residues are accepted"
-     STOP
- END IF
+ if (natom < natomMin ) THEN
+     write(unit_o,*)" Only systems above ", natomMin, " residues are accepted"
+     stop
+ end if
  !
  !
  write (unit_o, '(" Molecules: "i4," Residues:   ",i4," Atoms:  ",i6)') str%nmol, str%nres, natom
  write (unit_o, '(" Molecules: "i4," Residues:   ",i4," Atoms:  ",i6)') strTarg%nmol, strTarg%nres, strTarg%natoms
  !
- !allocate (mols(nmol, 2), stat = ioerr)
- !call errorAllocmem(ioerr, 'NMol')
- !allocate (molres(nres), stat = ioerr)
- !call errorAllocmem(ioerr, 'NRes')
  allocate (atoms(natom), PDBrnum(natom), res(natom), atp(natom), chain(natom),molnum(natom), &
            stepPtsDef(natom,natom),PDBTargetID(strTarg%natoms),stat = ioerr)
  call errorAllocmem(ioerr, 'NAtom')
@@ -81,7 +73,6 @@ program discrete
     END DO readloop
     natomCommon=k
     WRITE(unit_o,*)"NATOM COMMON", natomCommon
-   ! write(unit_o,*) str %ats(:) %resIdbyAtom
     ALLOCATE( oid(natomCommon),commonResidue(natomCommon))
     REWIND(unit_pairs)
     k=1
@@ -118,10 +109,6 @@ program discrete
      call removesp(atp(i) )
  END DO
  !
- !DO i=1,natom
- !write(unit_o,*)PDBrnum(i)
- !end do
-! write(unit_o,*)commonResidue
  oid=0
  k=1
    DO i=1,natom
@@ -131,14 +118,7 @@ program discrete
         END IF
     END DO
     !
- !   DO i=1,natomCommon
- !      Write(unit_o, *)i, oid(i) , commonResidue(i)
- !   END DO
- !
  !  Ahora decider que residuos del target son los comunes
- !
- !
-  !  STOP
  unit_pairs2= openFn(files, '-p2')
  k=1
    readloopTarget: DO
@@ -174,11 +154,6 @@ program discrete
     do i = 1, natom
         r(i) = SPtoDP(str % ats(i) % r)
     enddo
-    !
-!    do i = 1, natomCommon
-!        rtarg(i) = SPtoDP(rspTarg(i))
-!    enddo
-
     !
  deallocate(commonResidue,PDBTargetID)
  !
@@ -531,7 +506,6 @@ program discrete
                     call colisioNonBond(temps, nblist,clist, r, v, xm, xsum, ierr,TMIN, natom)
                     call DMDIntLoop(nblist, r, v, xm, tacact, tpart, ipart, TACT, TMIN, temps, iev, natom, toUpdate)
                     taccorr = taccorr + tacact
-                    !call thermalize(seed, iev, natom, temp, xmassa, v, xm, ekin)
                 enddo
                 ! end do while(taccorr.lt.tcorr)-----------------------------------------------
                 call thermalize(seed, iev, natom, temp, xmassa, v, xm, ekin)
@@ -597,10 +571,7 @@ program discrete
              stopping=.TRUE.
              exitStatus=1
          END IF
-    !     IF ( slope < DRMSd .and. error < errorAcceptable ) THEN
-    !         stopping=.TRUE.
-    !         exitStatus=0
-    !     END IF
+
          !
          IF (slope < DRMSD .and. error < 0.4*error0 .and. .not.stopping) THEN
            IF(ibloc > error_evo_size .and. error > errorAcceptable .and. cuantosForceIt < 6) THEN
@@ -612,18 +583,8 @@ program discrete
              cuantosForceIt=cuantosForceIt+1
            END IF
          END IF
-         ! EVITAMOS QUE SE BLOQUE EN ESTRUCTURAS CONVERGIDAS
-       !  IF (error < 0.5 ) then
-       !      finishMD=.TRUE.
-          !   xbeta=5000. ! se acabo el DIMS
-       !  ELSE
-       !      finishMD=.FALSE.
-       !
-       !  END IF
 
 
-  !      IF( errorBKP-error > RMSD_DIF) THEN
-             errorBKP=error
        IF (mod(ibloc,nskip)==0) THEN
       !    call writeSnapShot(unit_traj, nwritten, r, atoms, res, chain, rnum, natom)
       !
@@ -633,7 +594,7 @@ program discrete
          call writeEnergies(unit_ener, unit_o, temps, epotgo, ekin0, natom,fractionDone,error,&
               aux_acc,xbeta,saco,sum(discardedEner(:,:)),count(stepPts(:,:) % saltos <0), &
               contarSaltos,.TRUE., .TRUE.,ierr)
-         ! write(unit_traj,'(10f8.3)')r
+          write(unit_traj,'(10f8.3)')r
           nwritten=nwritten+1
       END IF
 

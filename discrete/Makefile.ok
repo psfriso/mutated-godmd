@@ -1,17 +1,17 @@
 include ../config.mk
 #
 OBJS = IO.o random.o energy.o colisio.o DMD.o
-MODS = paramSet.o 
+MODS = paramSet.o
 EXEFILE = discrete
 
 discrete: ${MODS} $(OBJS) $(LIBDIR) main.o
-	$(F77) $(LFLAGS) $(ENDFLAG) -o $(EXEFILE) $(LOPTIONS) $(OBJS) $(MODS) main.o -lDiscrete 
+	$(F77) $(LFLAGS) $(ENDFLAG) -o $(EXEFILE) $(LOPTIONS) $(OBJS) $(MODS) main.o -lDiscrete
 
-main.o: vars.h	
+main.o: vars.h
 
 .f.o: $<
 	$(F77) -ffree-form $(OPTIONS) $(CFLAGS) $<
 .F.o: $<
 	$(F77) -ffree-form $(OPTIONS) $(CFLAGS) $<
-clean: 
+clean:
 	rm *.o *.mod $(EXEFILE)

@@ -1,6 +1,6 @@
 !
 ! File:   DMD.f
-! Author: gelpi
+! Author: psfriso
 !
 ! Created on 14 de marzo de 2012, 16:54
 !
@@ -29,14 +29,14 @@ use geometryDP
 ! busca quina es la propera colisio
        do i = 1, natom
             if (toUpdate(i)) then
-                tpart(i) = 1.d15               
+                tpart(i) = 1.d15
                 do j = 1, nblist(i)%nats
                     if (nblist(i)%iData(j)%timp.lt.tpart(i)) then
                         tpart(i) = nblist(i)%iData(j)%timp
                         ipart(i) = j ! ipart recull index NO num d'atom
                     endif
                     toUpdate(i) = .false.
-                enddo  
+                enddo
             endif
         enddo
         tevent = 1.e15
@@ -55,12 +55,12 @@ use geometryDP
         call updateV(r, v, nblist(mem1)%iData(npair1)%deltak, nxm, nblist(mem1)%iData(npair1)%xsum, &
         mem1, mem2, natom)
         ! Assegurem que trespassem la barrera en la direcció correcta
-        r(mem1)%x = r(mem1)%x + v(mem1)%x * tevent1/DBLE(100000.)
-        r(mem1)%y = r(mem1)%y + v(mem1)%y * tevent1/DBLE(100000.)
-        r(mem1)%z = r(mem1)%z + v(mem1)%z * tevent1/DBLE(100000.)
-        r(mem2)%x = r(mem2)%x + v(mem2)%x * tevent1/DBLE(100000.)
-        r(mem2)%y = r(mem2)%y + v(mem2)%y * tevent1/DBLE(100000.)
-        r(mem2)%z = r(mem2)%z + v(mem2)%z * tevent1/DBLE(100000.)
+        r(mem1)%x = r(mem1)%x + v(mem1)%x * tevent1/DBLE(10000.)
+        r(mem1)%y = r(mem1)%y + v(mem1)%y * tevent1/DBLE(10000.)
+        r(mem1)%z = r(mem1)%z + v(mem1)%z * tevent1/DBLE(10000.)
+        r(mem2)%x = r(mem2)%x + v(mem2)%x * tevent1/DBLE(10000.)
+        r(mem2)%y = r(mem2)%y + v(mem2)%y * tevent1/DBLE(10000.)
+        r(mem2)%z = r(mem2)%z + v(mem2)%z * tevent1/DBLE(10000.)
         !
         ! ara actualitza els temps de colisio per a les dues particules que han xocat
         ! anulem la colisio per a que no es repeteixi
@@ -72,4 +72,3 @@ use geometryDP
 !    deallocate (tpart, ipart)
     ! end do while (tacact.lt.tact)------------------------------------------------
 end subroutine dmdIntloop
-
