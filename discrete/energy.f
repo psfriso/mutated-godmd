@@ -34,6 +34,36 @@
     END SUBROUTINE activateClist
 
 !===============================================================================
+       subroutine model_mutation(stepPts, natom, nModified, nblist, to_mutate, impact_mutation)
+       use stepPotentials
+       use intList
+       integer, intent(IN) :: natom, nModified
+       integer, intent(IN), dimension(nModified) :: to_mutate
+       real, intent(IN), dimension(nModified) :: impact_mutation
+       type(stepPotInt), intent(IN) :: stepPts(natom,natom)
+       type(intpList), intent(INOUT) :: nblist(natom)
+       integer i, k,j, s
+
+       do i = 1, nModified
+
+           do k=1,nblist(i)%nats
+               j=nblist(i)%idata(k)%patnum
+
+               do s = 1, size(nblist(i)%iData(k) % stepPt% step )
+
+                   nblist(i)%iData(k) % stepPt% step(s) % e = &
+                   sign( 1.0, nblist(i)%iData(k) % stepPt% step(s) % e ) * &
+                   nblist(i)%iData(k) % stepPt% step(s) % e * impact_mutation(i)
+
+               enddo
+          enddo
+
+      enddo
+
+
+       end subroutine model_mutation
+!===============================================================================
+!===============================================================================
    subroutine actualizeStepPot(stepPts,natom, nblist)
    use stepPotentials
    use intList
@@ -41,23 +71,23 @@
    type(stepPotInt), intent(IN) :: stepPts(natom,natom)
    type(intpList), intent(INOUT) :: nblist(natom)
    integer i, k,j
-  
+
    do i = 1,natom
-   
-       do k=1,nblist(i)%nats 
-       
+
+       do k=1,nblist(i)%nats
+
            j=nblist(i)%idata(k)%patnum
 
          if ( stepPts(i,j)%active .and. stepPts(i,j)%nstep ==4 ) THEN
 
              nblist(i)%iData(k) %stepPt =  stepPts(i,j)
-           
+
        END IF
-  
+
       enddo
   enddo
-  
-  
+
+
    end subroutine actualizeStepPot
 !===============================================================================
 !===============================================================================
@@ -80,22 +110,22 @@
    where (stepPts%active)
       stepPts%active = .false.
    end where
-      
+
    nblist%nats = 0
    IsActive=.FALSE.
-   
- 
+
+
    do jj = 2,natomCommon
     !  rj = r(j) ! intentem millorar cache hits a r(i)
       do ii = 1,jj-1
           i=oid(ii)
           j=oid(jj)
       secstruct:  if (stepPts(i,j)%tipInt == SSEC ) THEN
-! inline 
+! inline
          rij_INI = calcDist2DP(r(i),r(j))
          rij_TARG =calcDist2DP(rtarg(ii),rtarg(jj))
        nsteps:  IF( stepPts(i,j)%nstep == 2) THEN
-             
+
            isactive1:  IF(rij_INI< rcut2GO2) THEN
                 stepPts(i,j)%active = .true.
             !    write(*,*) "ACTIVE 1", i,j
@@ -104,13 +134,13 @@
                 nblist(i)%iData(nblist(i)%nats) = intData(j, nblist(j)%nats, stepPts(i,j), xsum, 1.e15, 0.)
                 nblist(j)%iData(nblist(j)%nats) = intData(i, nblist(i)%nats, stepPts(i,j), xsum, 1.e15, 0.)
              END IF isactive1
-   
+
            ELSEIF  ( stepPts(i,j)%nstep == 4) THEN
-     
+
     isactive21:   IF (MOD(real(i+j),2.0)==0 ) THEN
-                 
+
     isactive22:     IF ((rij_INI<rcut2GO4 ).OR.(rij_TARG<rcut2GO4)) THEN
-                                
+
                      stepPts(i,j)%active = .true.
                !      write(*,*) "ACTIVE 2", i,j
                      nblist(i)%nats = nblist(i)%nats + 1
@@ -118,23 +148,23 @@
                      nblist(i)%iData(nblist(i)%nats) = intData(j, nblist(j)%nats, stepPts(i,j), xsum, 1.e15, 0.)
                      nblist(j)%iData(nblist(j)%nats) = intData(i, nblist(i)%nats, stepPts(i,j), xsum, 1.e15, 0.)
                 END IF isactive22
-        
+
                  END IF isactive21
-                 
-                
+
+
          ENDIF nsteps
 
        ENDIF secstruct
      enddo
    enddo
-             
-  
 
-  
+
+
+
    do j = 2,natom
     !  rj = r(j) ! intentem millorar cache hits a r(i)
       do i = 1,j-1
-  
+
           if (stepPts(i,j)%tipInt == FAKE ) THEN
               if(calcDistDP(r(i),r(j))<radioInteraccion) THEN
                stepPts(i,j)%active = .true.
@@ -147,10 +177,10 @@
           ENDIF
       enddo
    enddo
-  
+
  end subroutine activateStepPot
 !===============================================================================
- 
+
  subroutine thermalize(seed, iev, natom, TEMP, xmassa, v, xm, ekin)
  use geometryDP
  use ran_mod
@@ -199,8 +229,8 @@
 
    enddo
 
-   ekin = 1.5 * natom * TEMP *kb! No cal recalcularla 
-   
+   ekin = 1.5 * natom * TEMP *kb! No cal recalcularla
+
  end subroutine thermalize
 !========================================================================
 !========================================================================
@@ -252,4 +282,3 @@
    enddo
  end function calcEkin
 !===============================================================================
-

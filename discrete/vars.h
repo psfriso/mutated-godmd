@@ -1,10 +1,10 @@
 !
 ! CommLine & I/O
 !
-   integer, parameter :: NFILES = 8
- 
-   integer unit_i, unit_o,unit_ener, unit_traj,unit_pairs,unit_pairs2
- 
+   integer, parameter :: NFILES = 9
+
+   integer unit_i, unit_o,unit_ener, unit_traj,unit_pairs,unit_pairs2, unit_touch
+
    type(commLineOption) :: files(NFILES) = (/&
    commLineOption("-i",    "param",          "formatted",   "old",     "Settings"),&
    commLineOption("-pdbin", "raw PDB file",  "formatted",   "old",     "Initial PDB"),&
@@ -12,19 +12,20 @@
    commLineOption("-trj", "trajectory.pdb", "formatted",   "unknown", "Trajectory (PDB)"),&
    commLineOption("-pdbtarg",  "target.pdb", "formatted",   "old",     "Target PDB"),&
    commLineOption("-o",    "log",            "formatted",   "unknown", "Calculation Log"),&
+   commLineOption("-touch",  "resdiues.dat", "formatted",   "old",     "List of affected residues"),&
    commLineOption("-p1",   "same.dat",     "formatted",   "old",     "Table of same residues"),&
    commLineOption("-p2",   "sametarget.dat",    "formatted",   "old",     "Table of same residues target")/)
 
   INTEGER, PARAMETER :: DBL=SELECTED_REAL_KIND(p=13)! Double precision real number definition processor independent
   INTEGER, PARAMETER :: SGL=SELECTED_REAL_KIND(p=6) ! Single Precision real number definition processor independent
 
- ! Coordinates and velocities 
+ ! Coordinates and velocities
    type(pointDP), allocatable :: r(:), v(:)
 
-   type(point) :: rcm ! C of M  
+   type(point) :: rcm ! C of M
    type(pointDP), allocatable :: rtarg(:)
-         
- 
+
+
 ! Step Potentials
    type (stepPotInt), allocatable :: stepPts(:,:)
    type (intDataTop), allocatable :: stepPtsDef(:,:)
@@ -36,7 +37,7 @@
    character(len=1), allocatable :: chain(:)
    integer natom
    integer, allocatable :: molNum(:)
-   
+
    ! Pedro
    REAL*8 :: error
    real*8, dimension(3,3) :: U               ! Rotation Matrix
@@ -51,12 +52,12 @@
    real, save :: DRMSd=1.E-4
    integer :: contarTodos
    !
-   
+
  ! Potentials & energies
    real :: evdw,rvdw,xm, rhc, xsum
    real xmassa, calcEkin, ekin, epotfis, epotgo, ekin0
    real epot(MAXTIPINT)
-   
+
 ! Interaction pairs
    type(intpList), allocatable :: blist(:), nblist(:)
    type(overlapscheck), allocatable :: clist(:)
@@ -106,18 +107,21 @@
    LOGICAL :: calcAuxAcc
    LOGICAL :: unForceIt
    INTEGER :: nwritten=0
- ! Diferente numero de atomos  
+ ! Diferente numero de atomos
  Character(LEN=5) :: resOrig
  INTEGER :: status
  INTEGER, ALLOCATABLE:: OID(:)
  INTEGER :: natomCommon,k
  REAL(DBL) ::radioInteraccion=8.5
- ! Checking 
+ ! Checking
  INTEGER :: exitStatus=0
  character(len=5), allocatable :: commonResidue(:)
  character(len=5), allocatable :: PDBTargetID(:)
  integer :: cuantosForceIt
  logical:: finishMD
  real(dbl):: errorBKP=10000.0
-
-         
+ integer :: nModified
+ character(len=5), allocatable, dimension(:) :: mutated
+ real :: factor
+ real, allocatable, dimension(:) :: impact_mutation
+ integer, allocatable, dimension(:) :: to_mutate

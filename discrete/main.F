@@ -56,10 +56,7 @@ program discrete
  write (unit_o, '(" Molecules: "i4," Residues:   ",i4," Atoms:  ",i6)') str%nmol, str%nres, natom
  write (unit_o, '(" Molecules: "i4," Residues:   ",i4," Atoms:  ",i6)') strTarg%nmol, strTarg%nres, strTarg%natoms
  !
- !allocate (mols(nmol, 2), stat = ioerr)
- !call errorAllocmem(ioerr, 'NMol')
- !allocate (molres(nres), stat = ioerr)
- !call errorAllocmem(ioerr, 'NRes')
+
  allocate (atoms(natom), PDBrnum(natom), res(natom), atp(natom), chain(natom),molnum(natom), &
            stepPtsDef(natom,natom),PDBTargetID(strTarg%natoms),stat = ioerr)
  call errorAllocmem(ioerr, 'NAtom')
@@ -70,7 +67,7 @@ program discrete
  !
  !  Lectura de la estructura final
  !
-     unit_pairs= openFn(files, '-p1')
+   unit_pairs= openFn(files, '-p1')
     !
     !  Vamos a leer la lista de pares
     !
@@ -180,7 +177,66 @@ program discrete
 !        rtarg(i) = SPtoDP(rspTarg(i))
 !    enddo
 
-    !
+unit_touch= openFn(files, '-touch')
+ !
+ !  Vamos a leer la lista de residues
+ !
+ k=0
+ resOrig = ''
+ factor = 0
+ DO
+    READ(unit_touch,*,IOSTAT=status) resOrig, factor
+    IF ( status /= 0 ) EXIT
+    k=k+1
+ END DO
+
+ nModified = 0
+
+ nModified=k
+ WRITE(unit_o,*)"Number of residues to modify", nModified
+ ALLOCATE( mutated( nModified ) , impact_mutation( nModified ) , to_mutate( nModified ) )
+ REWIND(unit_touch)
+ k=1
+
+ DO
+    resOrig = ''
+    factor = 0
+    READ(unit_touch,*,IOSTAT=status)resOrig , factor
+    IF ( status /= 0 ) EXIT
+    call removesp(resOrig)
+    mutated(k)=resOrig
+    impact_mutation(k) = factor
+    k=k+1
+ END DO
+
+ CLOSE(unit_touch)
+!=======================================================
+
+DO i = 1, nModified
+  write(unit_o, *) "I am going to modify residue ", mutated(i), " by ", impact_mutation(i)
+END DO
+
+! ======================================================
+
+
+to_mutate = 0
+k = 1
+do i =1 , natom
+  if( any(PDBrnum(i) ==  mutated) ) then
+    if ( k > nModified  ) then
+      write(unit_o, *) " something went wrong. chechk that resiudes numbers are not repeated"
+      stop
+    end if
+    to_mutate(k) = i
+    k = k +1
+  end if
+end do
+
+DO i = 1, nModified
+  write(unit_o, *) "Residue ", mutated(i), ' is ', to_mutate(i)
+END DO
+
+
  deallocate(commonResidue,PDBTargetID)
  !
  !END SETUP
@@ -469,6 +525,8 @@ program discrete
     finishMD=.FALSE.
     !
     !
+    call model_mutation(stepPts,natom, nModified, nblist, to_mutate, impact_mutation)
+
     !----------------------------------------------------------------------------
     do while (.not.stopping)
 
@@ -530,10 +588,9 @@ program discrete
                     call colisioNonBond(temps, nblist,clist, r, v, xm, xsum, ierr,TMIN, natom)
                     call DMDIntLoop(nblist, r, v, xm, tacact, tpart, ipart, TACT, TMIN, temps, iev, natom, toUpdate)
                     taccorr = taccorr + tacact
-                    !call thermalize(seed, iev, natom, temp, xmassa, v, xm, ekin)
+                    call thermalize(seed, iev, natom, temp, xmassa, v, xm, ekin)
                 enddo
                 ! end do while(taccorr.lt.tcorr)-----------------------------------------------
-                call thermalize(seed, iev, natom, temp, xmassa, v, xm, ekin)
                 tacrect = tacrect + taccorr
             enddo
         !
@@ -561,7 +618,6 @@ program discrete
         ! end DO while(tacum.lt.tsnap) -------------------------------------------------
 
         IF(calcAuxAcc) aux_acc= accepted*1./totalTrials
-      ! SELF_STOP
 
          errcont=errcont+1
          IF (errcont > error_evo_size ) errcont=1

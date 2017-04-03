@@ -1,5 +1,5 @@
 DEBUG =
-#DEBUG = -g -fbacktrace -fbounds-check 
+DEBUG = -g -fbacktrace -fbounds-check 
 #DEBUG = -g -fbacktrace -fbounds-check -DDEBUG
 DEBUGNOCHECK = 
 #DEBUGNOCHECK = -g -fbacktrace -DDEBUG
