@@ -1,0 +1,260 @@
+ Molecules:    1 Residues:    214 Atoms:     214
+ Molecules:    1 Residues:    214 Atoms:     214
+ NATOM COMMON         214
+ Number of residues to modify           3
+ I am going to modify residue 33    by    50.0000000    
+ I am going to modify residue 32    by    50.0000000    
+ I am going to modify residue 34    by    50.0000000    
+ Residue 33    is           32
+ Residue 32    is           33
+ Residue 34    is           34
+ =================================================
+ =                                               =
+ =                    GOdMD                      =
+ =                                               =
+ = P Sfriso, A. Emperador, JL. Gelpi, M.Orozco   =
+ =                                               =
+ =                  (c) 2013                     =
+ =================================================
+
+  I N P U T  F I L E S
+  ====================
+  Settings            : param.in
+  Initial PDB         : 1ake_A.pdb
+  Energies            : test.ener.dat
+  Trajectory (PDB)    : test.trj.crd
+  Target PDB          : 4ake_A.pdb
+  Calculation Log     : log_1ake.txt
+  List of affected res: mutations.dat
+  Table of same residu: 1ake_A.aln
+  Table of same residu: 4ake_A.aln
+
+ ------------------------------------------------------------
+ | CALCULATION PARAMETERS                                   |
+ ------------------------------------------------------------
+ | Simulation settings                                      |
+ ------------------------------------------------------------
+ | Simulation Time (ps) (Nbloc x TSnap)       |    5000.000 |
+ | Output structure (fs)             | TSnap  |     500.000 |
+ | Re-scoring target (fs)            | Trect  |     100.000 |
+ | Update velocities (fs)            | Tcorr  |     100.000 |
+ | Update Lists, collision times (fs)| Tact   |      10.000 |
+ | Min. accepted colision time (fs)  | TMin   |  0.00000010 |
+ | Temperature (K)                   | Temp   |       36.08 |
+ ------------------------------------------------------------
+ ------------------------------------------------------------
+ | DIMS                                                     |
+ ------------------------------------------------------------
+ |Acceptance                          |ACCEPTANCE|  0.79000002 |
+ |GO Energy   (kcal)                  |GOENER    |  0.20000000 |
+ |Changing distances well width(A)    |sigmago   |  0.13000000 |
+ |Tolerance between changes(A)        |dtol      |  0.30000001 |
+ |Not-Changing distances well width(A)|wellwidth |  0.13000000 |
+ |Dummy tolerance (A)                 |sigmaFake |  0.02000000 |
+ |Factor scaling NMA coupling         |scalFactor|  0.40000001 |
+ |Cut-off in Radius Gyration        | rgyrPercent|  0.50000000 |
+ |Cut-off not changing GO interact.(A)|rcut1     | 75.00000000 |
+ |Minimum Energy of any well (kcal) | minEnerWell|  0.05000000 |
+ |Min time to eq. energy(ps)        |Ener_evo_size |   50    |
+ |Number of ENM Eigenvectors          |NEVECS    |    5    |
+ |Fraction of energy to add at MD     |DEGO_BASE |  0.01000000 |
+ |Minimum acceptable RMSD (A)    |errorAcceptable|  1.00000000 |
+ |Number of frames to skip            |NSKIP     |       5 |
+ ------------------------------------------------------------
+ | Other                                                    |
+ ------------------------------------------------------------
+ | Random generator seed                      |        1238 |
+ | IDAB, IGOAB, IWR, ISOLV                    |     1 1 1 1 |
+ ------------------------------------------------------------
+ PNS rgyr     18.491724317318926       CutOff    9.2458621586594631     
+ UNO QUE SE MUEVE           8           7   3.8486541726285854        3.7711255311347966     
+ UNO QUE SE MUEVE           9           8   3.8692971384770809        3.7900795773408893     
+ UNO QUE SE MUEVE          18          17   3.8982633276870087        3.8106750197693366     
+ UNO QUE SE MUEVE          19          18   3.8948354024326095        3.7886118104146087     
+ UNO QUE SE MUEVE          21          20   3.7480728331405753        3.8287192626530255     
+ UNO QUE SE MUEVE          29          28   3.8876244776268969        3.7736705227772536     
+ UNO QUE SE MUEVE          30          29   3.8445952061795197        3.7626407863297939     
+ UNO QUE SE MUEVE          31          30   3.7188569492573920        3.8166581430398883     
+ UNO QUE SE MUEVE          36          35   3.9203460544276147        3.7869284194306454     
+ UNO QUE SE MUEVE          41          40   3.8838130857101443        3.7881591505196073     
+ UNO QUE SE MUEVE          43          42   3.8867984545515415        3.7603494155051300     
+ UNO QUE SE MUEVE          47          46   3.8540407169491715        3.7579737428462385     
+ UNO QUE SE MUEVE          56          55   3.8961085110543232        3.7935139311101160     
+ UNO QUE SE MUEVE          59          58   3.8725041097917678        3.7958681758989044     
+ UNO QUE SE MUEVE          60          59   3.9074822226212924        3.7647527287438751     
+ UNO QUE SE MUEVE          78          77   3.8635972719112126        3.7875787333896755     
+ UNO QUE SE MUEVE          81          80   3.6864092889780302        3.7631301308600684     
+ UNO QUE SE MUEVE          83          82   3.9109816038305198        3.7695923302146435     
+ UNO QUE SE MUEVE          87          86   3.0521582644963763        2.9890531105283680     
+ UNO QUE SE MUEVE          88          87   3.7272569004747274        3.8042794096106949     
+ UNO QUE SE MUEVE          91          90   3.9323521953649880        3.8164007999064107     
+ UNO QUE SE MUEVE         107         106   3.8500193786666066        3.7500231225611231     
+ UNO QUE SE MUEVE         111         110   3.7696630517296623        3.8451127800264273     
+ UNO QUE SE MUEVE         113         112   3.8543226119914471        3.7666488522846180     
+ UNO QUE SE MUEVE         115         114   3.8309189519095752        3.7533357891618340     
+ UNO QUE SE MUEVE         117         116   3.7566576149071689        3.8433728501834197     
+ UNO QUE SE MUEVE         118         117   3.9211004225176693        3.8296988944489665     
+ UNO QUE SE MUEVE         129         128   3.7692692855887699        3.8476484761037493     
+ UNO QUE SE MUEVE         138         137   3.7372264845492538        3.8227480221080774     
+ UNO QUE SE MUEVE         140         139   3.8831414398998705        3.7709786717326055     
+ UNO QUE SE MUEVE         141         140   3.9471188228402219        3.8266614229754166     
+ UNO QUE SE MUEVE         146         145   3.7194891144021489        3.8054265327364285     
+ UNO QUE SE MUEVE         168         167   3.8636749117326752        3.7861667465223152     
+ UNO QUE SE MUEVE         170         169   3.8707251701267769        3.7790838677182039     
+ UNO QUE SE MUEVE         179         178   3.8687609442299995        3.7796593266450045     
+ UNO QUE SE MUEVE         181         180   3.8465734980274187        3.7707146933750981     
+ UNO QUE SE MUEVE         190         189   3.8919096032108875        3.8153422075255010     
+ UNO QUE SE MUEVE         193         192   3.9366463472437210        3.7804540586785964     
+ UNO QUE SE MUEVE         194         193   3.8871768152149784        3.8087386153353817     
+ UNO QUE SE MUEVE         196         195   3.8962721993393505        3.8039513021496565     
+ UNO QUE SE MUEVE         199         198   3.9156637680692232        3.7905155553546424     
+ UNO QUE SE MUEVE         203         202   3.8760363542964029        3.7990274318459019     
+ UNO QUE SE MUEVE         208         207   3.9087507733995861        3.7900236204083466     
+ UNO QUE SE MUEVE         214         213   3.8759645365384352        3.7843368731393459     
+  He podido fijar las distancias
+EIGENVALUE   1 Valor    0.03976
+EIGENVALUE   2 Valor    0.05235
+EIGENVALUE   3 Valor    0.07472
+EIGENVALUE   4 Valor    0.08769
+EIGENVALUE   5 Valor    0.09656
+PORCENTAJE  1  0.3168
+PORCENTAJE  2  0.2406
+PORCENTAJE  3  0.1686
+PORCENTAJE  4  0.1436
+PORCENTAJE  5  0.1304
+  NMA-Metadynamica OK
+ bonded list OK
+  contact list OK         1246
+ non-bonded list OK
+ step-potentials activated
+ Initial Pairs list
+ ==================
+ Total:                  22791
+ Bonded:                   280
+ Non Bonded:               851
+   GO 1 SQ WELL            552
+   GO 2 SQ WELL            299
+ Fake:             0
+
+ System setup completed
+
+ RMSD INICIAL    7.1306768865007522     
+ SCORE    17948.455078125000     
+ Time(ps):     2.58 Epot(kcal/mol):   -135.700  Done(%): 0.01 RMSd(A):   7.120    5.00 1.00   0    0   0
+ Time(ps):     5.16 Epot(kcal/mol):   -134.900  Done(%): 0.03 RMSd(A):   7.132    5.00 1.00   0    0   0
+ Time(ps):     7.73 Epot(kcal/mol):   -134.050  Done(%): 0.03 RMSd(A):   7.126    5.00 1.00   0    0   0
+ Time(ps):    10.29 Epot(kcal/mol):   -134.550  Done(%): 0.03 RMSd(A):   7.115    5.00 1.00   0    0   0
+ Time(ps):    12.86 Epot(kcal/mol):   -132.500  Done(%): 0.04 RMSd(A):   7.129    5.00 1.00   0    0   0
+ Time(ps):    15.43 Epot(kcal/mol):   -132.300  Done(%): 0.05 RMSd(A):   7.109    5.00 1.00   0    0   0
+ Time(ps):    17.99 Epot(kcal/mol):   -131.900  Done(%): 0.06 RMSd(A):   7.095    5.00 1.00   0    0   0
+ Time(ps):    20.56 Epot(kcal/mol):   -131.700  Done(%): 0.06 RMSd(A):   7.093    5.00 1.00   0    0   0
+ Time(ps):    23.12 Epot(kcal/mol):   -131.050  Done(%): 0.07 RMSd(A):   7.089    5.00 1.00   0    0   0
+ Time(ps):    25.68 Epot(kcal/mol):   -131.850  Done(%): 0.07 RMSd(A):   7.102    5.00 1.00   0    0   0
+ Time(ps):    28.23 Epot(kcal/mol):   -129.300  Done(%): 0.08 RMSd(A):   7.091    5.00 1.00   0    0   0
+ Time(ps):    30.79 Epot(kcal/mol):   -128.600  Done(%): 0.08 RMSd(A):   7.127    5.00 1.00   0    0   0
+ Time(ps):    33.35 Epot(kcal/mol):   -130.150  Done(%): 0.07 RMSd(A):   7.140    5.00 1.00   0    0   0
+ Time(ps):    35.91 Epot(kcal/mol):   -129.550  Done(%): 0.09 RMSd(A):   7.139    5.00 1.00   0    0   0
+ Time(ps):    38.48 Epot(kcal/mol):   -129.800  Done(%): 0.07 RMSd(A):   7.137    5.00 1.00   0    0   1
+ Time(ps):    41.04 Epot(kcal/mol):   -131.250  Done(%): 0.05 RMSd(A):   7.142    5.00 1.00   0    0   0
+ Time(ps):    43.61 Epot(kcal/mol):   -130.750  Done(%): 0.06 RMSd(A):   7.135    5.00 1.00   0    0   0
+ Time(ps):    46.18 Epot(kcal/mol):   -131.483  Done(%): 0.08 RMSd(A):   7.117    4.80 1.00   1    0   0
+ Time(ps):    48.84 Epot(kcal/mol):   -130.249  Done(%): 0.08 RMSd(A):   7.149    4.69 0.96   1    0   0
+ Time(ps):    51.51 Epot(kcal/mol):   -129.759  Done(%): 0.09 RMSd(A):   7.159    4.58 0.96   1    0   0
+ Time(ps):    54.17 Epot(kcal/mol):   -129.661  Done(%): 0.09 RMSd(A):   7.146    4.47 0.96   1    0   0
+ Time(ps):    56.95 Epot(kcal/mol):   -129.673  Done(%): 0.10 RMSd(A):   7.141    4.41 0.93   1    0   0
+ Time(ps):    59.51 Epot(kcal/mol):   -129.963  Done(%): 0.09 RMSd(A):   7.148    4.24 1.00   1    0   0
+ Time(ps):    62.38 Epot(kcal/mol):   -128.875  Done(%): 0.10 RMSd(A):   7.129    4.21 0.90   1    0   0
+ Time(ps):    65.15 Epot(kcal/mol):   -130.369  Done(%): 0.10 RMSd(A):   7.119    4.15 0.93   1    0   0
+ Time(ps):    67.92 Epot(kcal/mol):   -130.415  Done(%): 0.09 RMSd(A):   7.134    4.10 0.93   1    0   0
+ Time(ps):    70.58 Epot(kcal/mol):   -130.667  Done(%): 0.10 RMSd(A):   7.169    4.00 0.96   1    0   0
+ Time(ps):    73.25 Epot(kcal/mol):   -131.054  Done(%): 0.10 RMSd(A):   7.157    3.91 0.96   2    0   0
+ Time(ps):    76.12 Epot(kcal/mol):   -128.938  Done(%): 0.10 RMSd(A):   7.143    3.88 0.90   2    0   0
+ Time(ps):    78.69 Epot(kcal/mol):   -132.676  Done(%): 0.11 RMSd(A):   7.129    3.73 1.00   2    0   0
+ Time(ps):    81.26 Epot(kcal/mol):   -131.214  Done(%): 0.10 RMSd(A):   7.130    3.58 1.00   2    0   0
+ Time(ps):    83.92 Epot(kcal/mol):   -128.296  Done(%): 0.09 RMSd(A):   7.121    3.49 0.96   2    0   0
+ Time(ps):    86.49 Epot(kcal/mol):   -130.892  Done(%): 0.10 RMSd(A):   7.115    3.35 1.00   2    0   0
+ Time(ps):    89.06 Epot(kcal/mol):   -129.752  Done(%): 0.10 RMSd(A):   7.124    3.22 1.00   2    0   0
+ Time(ps):    91.84 Epot(kcal/mol):   -130.964  Done(%): 0.10 RMSd(A):   7.126    3.18 0.93   2    0   0
+ Time(ps):    94.51 Epot(kcal/mol):   -132.560  Done(%): 0.11 RMSd(A):   7.095    3.10 0.96   2    0   0
+ Time(ps):    97.27 Epot(kcal/mol):   -130.329  Done(%): 0.12 RMSd(A):   7.103    3.06 0.93   2    0   0
+ Time(ps):   100.05 Epot(kcal/mol):   -129.326  Done(%): 0.12 RMSd(A):   7.082    3.02 0.93   3    0   0
+ Time(ps):   102.92 Epot(kcal/mol):   -129.150  Done(%): 0.11 RMSd(A):   7.110    3.00 0.90   3    0   0
+ Time(ps):   105.69 Epot(kcal/mol):   -129.798  Done(%): 0.11 RMSd(A):   7.101    2.96 0.93   3    0   0
+ Time(ps):   108.57 Epot(kcal/mol):   -127.114  Done(%): 0.12 RMSd(A):   7.092    2.94 0.90   3    0   0
+ Time(ps):   111.55 Epot(kcal/mol):   -129.396  Done(%): 0.12 RMSd(A):   7.084    2.93 0.87   3    0   0
+ Time(ps):   114.23 Epot(kcal/mol):   -130.512  Done(%): 0.10 RMSd(A):   7.070    2.87 0.96   3    0   0
+ Time(ps):   116.89 Epot(kcal/mol):   -130.056  Done(%): 0.11 RMSd(A):   7.062    2.80 0.96   3    0   0
+ Time(ps):   119.66 Epot(kcal/mol):   -130.862  Done(%): 0.11 RMSd(A):   7.075    2.76 0.93   3    0   2
+ Time(ps):   122.55 Epot(kcal/mol):   -130.504  Done(%): 0.11 RMSd(A):   7.062    2.74 0.90   3    0   0
+ Time(ps):   125.11 Epot(kcal/mol):   -128.546  Done(%): 0.09 RMSd(A):   7.046    2.63 1.00   3    0   0
+ Time(ps):   128.19 Epot(kcal/mol):   -130.117  Done(%): 0.10 RMSd(A):   7.047    2.63 0.84   4    0   1
+ Time(ps):   131.57 Epot(kcal/mol):   -130.019  Done(%): 0.10 RMSd(A):   7.038    2.63 0.76   4    0   0
+ Time(ps):   134.76 Epot(kcal/mol):   -131.179  Done(%): 0.09 RMSd(A):   7.037    2.63 0.81   4    0   0
+ Time(ps):   137.64 Epot(kcal/mol):   -127.321  Done(%): 0.08 RMSd(A):   7.023    2.61 0.90   4    0   0
+ Time(ps):   140.51 Epot(kcal/mol):   -129.834  Done(%): 0.08 RMSd(A):   7.047    2.60 0.90   4    0   0
+ Time(ps):   143.50 Epot(kcal/mol):   -129.173  Done(%): 0.08 RMSd(A):   7.058    2.59 0.87   4    0   0
+ Time(ps):   146.58 Epot(kcal/mol):   -128.171  Done(%): 0.07 RMSd(A):   7.051    2.59 0.84   4    0   0
+ Time(ps):   149.35 Epot(kcal/mol):   -127.605  Done(%): 0.08 RMSd(A):   7.043    2.55 0.93   4    0   0
+ Time(ps):   152.43 Epot(kcal/mol):   -126.931  Done(%): 0.09 RMSd(A):   7.053    2.55 0.84   4    0   0
+ Time(ps):   155.40 Epot(kcal/mol):   -130.165  Done(%): 0.09 RMSd(A):   7.048    2.54 0.87   4    0   1
+ Time(ps):   158.28 Epot(kcal/mol):   -128.750  Done(%): 0.09 RMSd(A):   7.068    2.52 0.90   4    0   0
+ Time(ps):   161.15 Epot(kcal/mol):   -128.157  Done(%): 0.09 RMSd(A):   7.068    2.51 0.90   4    0   0
+ Time(ps):   163.72 Epot(kcal/mol):   -128.763  Done(%): 0.10 RMSd(A):   7.075    2.41 1.00   4    0   0
+ Time(ps):   166.49 Epot(kcal/mol):   -127.833  Done(%): 0.11 RMSd(A):   7.052    2.38 0.93   5    0   0
+ Time(ps):   169.36 Epot(kcal/mol):   -128.241  Done(%): 0.10 RMSd(A):   7.029    2.36 0.90   5    0   0
+ Time(ps):   172.34 Epot(kcal/mol):   -129.101  Done(%): 0.09 RMSd(A):   7.020    2.35 0.87   5    0   0
+ Time(ps):   175.20 Epot(kcal/mol):   -128.172  Done(%): 0.11 RMSd(A):   7.016    2.34 0.90   5    0   0
+ Time(ps):   178.18 Epot(kcal/mol):   -125.561  Done(%): 0.08 RMSd(A):   6.997    2.33 0.87   5    0   0
+ Time(ps):   181.05 Epot(kcal/mol):   -128.745  Done(%): 0.08 RMSd(A):   6.970    2.31 0.90   5    0   1
+ Time(ps):   184.03 Epot(kcal/mol):   -130.279  Done(%): 0.12 RMSd(A):   6.975    2.31 0.87   5    0   1
+ Time(ps):   187.21 Epot(kcal/mol):   -130.599  Done(%): 0.13 RMSd(A):   6.951    2.31 0.81   5    0   1
+ Time(ps):   189.88 Epot(kcal/mol):   -127.850  Done(%): 0.13 RMSd(A):   6.944    2.25 0.96   5    0   0
+ Time(ps):   192.76 Epot(kcal/mol):   -129.568  Done(%): 0.14 RMSd(A):   6.931    2.24 0.90   5    0   0
+ Time(ps):   195.73 Epot(kcal/mol):   -127.772  Done(%): 0.14 RMSd(A):   6.901    2.23 0.87   6    0   0
+ Time(ps):   198.29 Epot(kcal/mol):   -127.561  Done(%): 0.14 RMSd(A):   6.892    2.14 1.00   6    0   0
+ Time(ps):   200.95 Epot(kcal/mol):   -127.997  Done(%): 0.14 RMSd(A):   6.870    2.09 0.96   6    0   1
+ Time(ps):   204.03 Epot(kcal/mol):   -129.617  Done(%): 0.14 RMSd(A):   6.836    2.09 0.84   6    0   0
+ Time(ps):   207.21 Epot(kcal/mol):   -127.857  Done(%): 0.13 RMSd(A):   6.836    2.09 0.81   6    0   0
+ Time(ps):   210.18 Epot(kcal/mol):   -127.000  Done(%): 0.15 RMSd(A):   6.849    2.08 0.87   6    0   0
+ Time(ps):   213.14 Epot(kcal/mol):   -127.583  Done(%): 0.14 RMSd(A):   6.837    2.08 0.87   6    0   0
+ Time(ps):   216.02 Epot(kcal/mol):   -129.102  Done(%): 0.14 RMSd(A):   6.810    2.06 0.90   6    0   1
+ Time(ps):   218.99 Epot(kcal/mol):   -126.338  Done(%): 0.15 RMSd(A):   6.804    2.06 0.87   6    0   0
+ Time(ps):   221.66 Epot(kcal/mol):   -128.357  Done(%): 0.14 RMSd(A):   6.800    2.01 0.96   6    0   0
+ Time(ps):   224.62 Epot(kcal/mol):   -128.009  Done(%): 0.14 RMSd(A):   6.786    2.00 0.87   7    0   0
+ Time(ps):   227.69 Epot(kcal/mol):   -124.735  Done(%): 0.14 RMSd(A):   6.781    2.00 0.84   7    0   0
+ Time(ps):   230.77 Epot(kcal/mol):   -127.433  Done(%): 0.14 RMSd(A):   6.773    2.00 0.84   7    0   0
+ Time(ps):   233.85 Epot(kcal/mol):   -126.900  Done(%): 0.14 RMSd(A):   6.758    2.00 0.84   7    0   3
+ Time(ps):   237.23 Epot(kcal/mol):   -126.417  Done(%): 0.14 RMSd(A):   6.730    2.00 0.76   7    0   2
+ Time(ps):   240.10 Epot(kcal/mol):   -127.619  Done(%): 0.15 RMSd(A):   6.736    1.98 0.90   7    0   0
+ Time(ps):   243.18 Epot(kcal/mol):   -127.675  Done(%): 0.15 RMSd(A):   6.708    1.98 0.84   7    0   0
+ Time(ps):   246.15 Epot(kcal/mol):   -125.085  Done(%): 0.16 RMSd(A):   6.689    1.98 0.87   7    0   0
+ Time(ps):   249.01 Epot(kcal/mol):   -127.372  Done(%): 0.16 RMSd(A):   6.655    1.96 0.90   7    0   0
+ Time(ps):   252.19 Epot(kcal/mol):   -126.333  Done(%): 0.17 RMSd(A):   6.643    1.96 0.81   7    0   2
+ Time(ps):   255.05 Epot(kcal/mol):   -124.876  Done(%): 0.18 RMSd(A):   6.613    1.95 0.90   8    0   0
+ Time(ps):   258.63 Epot(kcal/mol):   -123.434  Done(%): 0.15 RMSd(A):   6.628    1.95 0.72   8    0   0
+ Time(ps):   261.49 Epot(kcal/mol):   -125.029  Done(%): 0.15 RMSd(A):   6.634    1.94 0.90   8    0   4
+ Time(ps):   264.68 Epot(kcal/mol):   -126.164  Done(%): 0.15 RMSd(A):   6.612    1.94 0.81   8    0   3
+ Time(ps):   267.96 Epot(kcal/mol):   -126.636  Done(%): 0.13 RMSd(A):   6.583    1.94 0.79   8    0   0
+ Time(ps):   271.56 Epot(kcal/mol):   -126.659  Done(%): 0.16 RMSd(A):   6.589    1.93 0.72   8    0   0
+ Time(ps):   274.74 Epot(kcal/mol):   -124.664  Done(%): 0.17 RMSd(A):   6.575    1.93 0.81   8    0   0
+ Time(ps):   277.71 Epot(kcal/mol):   -125.291  Done(%): 0.15 RMSd(A):   6.582    1.93 0.87   8    0   0
+ Time(ps):   280.79 Epot(kcal/mol):   -124.607  Done(%): 0.14 RMSd(A):   6.565    1.93 0.84   8    0   0
+ Time(ps):   284.07 Epot(kcal/mol):   -127.024  Done(%): 0.14 RMSd(A):   6.536    1.93 0.79   8    0   0
+ Time(ps):   286.85 Epot(kcal/mol):   -125.375  Done(%): 0.12 RMSd(A):   6.528    1.90 0.93   9    0   0
+ Time(ps):   289.82 Epot(kcal/mol):   -124.019  Done(%): 0.11 RMSd(A):   6.512    1.90 0.87   9    0   0
+ Time(ps):   293.00 Epot(kcal/mol):   -123.719  Done(%): 0.12 RMSd(A):   6.504    1.90 0.81   9    0   0
+ Time(ps):   296.40 Epot(kcal/mol):   -123.191  Done(%): 0.14 RMSd(A):   6.484    1.90 0.76   9    0   0
+ Time(ps):   299.28 Epot(kcal/mol):   -124.384  Done(%): 0.14 RMSd(A):   6.504    1.88 0.90   9    0   0
+ Time(ps):   302.15 Epot(kcal/mol):   -123.225  Done(%): 0.13 RMSd(A):   6.497    1.87 0.90   9    0   1
+ Time(ps):   304.93 Epot(kcal/mol):   -122.930  Done(%): 0.12 RMSd(A):   6.525    1.85 0.93   9    0   3
+ Time(ps):   308.00 Epot(kcal/mol):   -123.450  Done(%): 0.14 RMSd(A):   6.518    1.84 0.84   9    0   1
+ Time(ps):   311.08 Epot(kcal/mol):   -122.784  Done(%): 0.13 RMSd(A):   6.508    1.84 0.84   9    0   0
+ Time(ps):   314.46 Epot(kcal/mol):   -122.672  Done(%): 0.13 RMSd(A):   6.507    1.84 0.76   9    0   0
+ Time(ps):   317.54 Epot(kcal/mol):   -123.210  Done(%): 0.14 RMSd(A):   6.470    1.84 0.84   9    0   0
+ Time(ps):   320.72 Epot(kcal/mol):   -124.377  Done(%): 0.13 RMSd(A):   6.456    1.84 0.81  10    0   0
+ Time(ps):   323.91 Epot(kcal/mol):   -124.741  Done(%): 0.13 RMSd(A):   6.432    1.84 0.81  10    0   0
+ Time(ps):   326.89 Epot(kcal/mol):   -124.307  Done(%): 0.15 RMSd(A):   6.390    1.83 0.87  10    0   0
+ Time(ps):   330.18 Epot(kcal/mol):   -124.256  Done(%): 0.13 RMSd(A):   6.383    1.83 0.79  10    0   0
+ Time(ps):   333.55 Epot(kcal/mol):   -122.448  Done(%): 0.14 RMSd(A):   6.378    1.83 0.76  10    0   1
+ Time(ps):   336.63 Epot(kcal/mol):   -124.798  Done(%): 0.15 RMSd(A):   6.381    1.83 0.84  10    0   0
+ Time(ps):   339.91 Epot(kcal/mol):   -123.239  Done(%): 0.15 RMSd(A):   6.366    1.83 0.79  10    0   0
