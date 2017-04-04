@@ -116,11 +116,7 @@ program discrete
      call removesp(atp(i) )
  END DO
  !
- !DO i=1,natom
- !write(unit_o,*)PDBrnum(i)
- !end do
-! write(unit_o,*)commonResidue
- oid=0
+  oid=0
  k=1
    DO i=1,natom
         IF(ANY(commonResidue==PDBrnum(i)) ) THEN
@@ -129,14 +125,6 @@ program discrete
         END IF
     END DO
     !
- !   DO i=1,natomCommon
- !      Write(unit_o, *)i, oid(i) , commonResidue(i)
- !   END DO
- !
- !  Ahora decider que residuos del target son los comunes
- !
- !
-  !  STOP
  unit_pairs2= openFn(files, '-p2')
  k=1
    readloopTarget: DO
@@ -156,9 +144,7 @@ program discrete
  k=1
   DO i=1,strTarg%natoms
        IF(ANY(commonResidue==PDBTargetID(i)) ) THEN
-      !     rspTarg(k)= strTarg % ats(i) %r
            rtarg(k) = SPtoDP(strTarg % ats(i) %r)
-      !     write(unit_o,*)PDBTargetID(i)
            k=k+1
        END IF
    END DO
@@ -173,9 +159,6 @@ program discrete
         r(i) = SPtoDP(str % ats(i) % r)
     enddo
     !
-!    do i = 1, natomCommon
-!        rtarg(i) = SPtoDP(rspTarg(i))
-!    enddo
 
 unit_touch= openFn(files, '-touch')
  !
@@ -235,7 +218,15 @@ end do
 DO i = 1, nModified
   write(unit_o, *) "Residue ", mutated(i), ' is ', to_mutate(i)
 END DO
-
+!
+! check that mutation impacts are reasonable
+do i = 1, nModified
+  if ( impact_mutation(i) > 101. .or. impact_mutation(i) < 0.00999) then
+    write(unit_o,*) "Impact of mutation ", mutated(i), "is beyond limits"
+    write(unit_o,*) impact_mutation(i) , " should be between 0.01 and 100 "
+    stop
+  end if
+end do
 
  deallocate(commonResidue,PDBTargetID)
  !
@@ -663,7 +654,7 @@ END DO
              cuantosForceIt=cuantosForceIt+1
            END IF
          END IF
-         ! EVITAMOS QUE SE BLOQUE EN ESTRUCTURAS CONVERGIDAS
+         ! EVITAMOS QUE SE BLOQUEE EN ESTRUCTURAS CONVERGIDAS
          IF (error < 0.5 ) then
              finishMD=.TRUE.
           !   xbeta=5000. ! se acabo el DIMS
@@ -675,9 +666,7 @@ END DO
 
        errorBKP=error
        IF (mod(ibloc,nskip)==0) THEN
-      !    call writeSnapShot(unit_traj, nwritten, r, atoms, res, chain, rnum, natom)
-      !
-       !  write(unit_o,*) " errores ", ierr
+
          call calcEpot(natom,natom, r, stepPts, epotgo, epotfis, epot)
          !
          call writeEnergies(unit_ener, unit_o, temps, epotgo, ekin0, natom,fractionDone,error,&

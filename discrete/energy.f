@@ -45,19 +45,17 @@
        integer i, k,j, s
 
        do i = 1, nModified
-
            do k=1,nblist(i)%nats
                j=nblist(i)%idata(k)%patnum
-
                do s = 1, size(nblist(i)%iData(k) % stepPt% step )
-
-                   nblist(i)%iData(k) % stepPt% step(s) % e = &
-                   sign( 1.0, nblist(i)%iData(k) % stepPt% step(s) % e ) * &
-                   nblist(i)%iData(k) % stepPt% step(s) % e * impact_mutation(i)
-
+                  if( nblist(i)%iData(k) % stepPt% step(s) % initial ) THEN
+                    ! only modify initial wells
+                     nblist(i)%iData(k) % stepPt% step(s) % e = &
+                     sign( 1.0, nblist(i)%iData(k) % stepPt% step(s) % e ) * &
+                     nblist(i)%iData(k) % stepPt% step(s) % e * impact_mutation(i)
+                  end if
                enddo
           enddo
-
       enddo
 
 
