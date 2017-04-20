@@ -7,7 +7,7 @@ MODULE commLine
 
  type commlineOption
     character(len=15) descr
-    character(len=120) filename
+    character(len=200) filename
     character(len=20) fmt, status
     character(len=50) help
  end type commlineOption
@@ -30,7 +30,7 @@ function openFn (opts, descr, unit, ext) result(unitf)
  if (unitf.gt.0)  then
     open (unitf, file=trim(opts(unitf)%filename)//trim(ext), status=opts(unitf)%status, form=opts(unitf)%fmt, iostat=err)
     if (err.ne.0) then
-       write (0, '("Error opening file: ", a50)') opts(unitf)%filename
+       write (0, '("Error opening file: ", a200)') opts(unitf)%filename
      stop 1
     end if
  endif
@@ -89,7 +89,7 @@ subroutine writeHelpText (opts)
 end subroutine writeHelpText
  
 function fileName(opts, descr, unit) result(fn)
- character(len=120) fn
+ character(len=200) fn
  character*(*), intent(in), optional :: descr
  integer, optional :: unit
  integer unitf
